@@ -1,180 +1,59 @@
-
-
 import axios from "axios";
 
 const api = axios.create({
     baseURL: "http://localhost:3000",
     withCredentials: true,
-});
+})
 
 
 /**
- * @description
- * Service to generate interview report based on
- * job title, user self description, resume and job description.
+ * @description Service to generate interview report based on user self description, resume and job description.
  */
-export const generateInterviewReport = async ({
-    title,
-    jobDescription,
-    selfDescription,
-    resumeFile,
-}) => {
+export const generateInterviewReport = async ({ jobDescription, selfDescription, resumeFile }) => {
 
-    try {
+    const formData = new FormData()
+    formData.append("jobDescription", jobDescription)
+    formData.append("selfDescription", selfDescription)
+    formData.append("resume", resumeFile)
 
-        const formData = new FormData();
-
-        // Job title is required by backend
-        formData.append(
-            "title",
-            title
-        );
-
-        formData.append(
-            "jobDescription",
-            jobDescription
-        );
-
-        formData.append(
-            "selfDescription",
-            selfDescription
-        );
-
-        // Only append resume if user selected one
-        if (resumeFile) {
-            formData.append(
-                "resume",
-                resumeFile
-            );
+    const response = await api.post("/api/interview/", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data"
         }
+    })
 
-        // Debug: check what is being sent
-        console.log("Interview FormData:");
+    return response.data
 
-        for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-
-        const response = await api.post(
-            "/api/interview/",
-            formData
-        );
-
-        console.log(
-           "Interview report response:",
-            response.data
-        );
-
-        return response.data;
-
-    } catch (error) {
-
-        console.error(
-            "Interview API Error:",
-           error.response?.data || error.message
-       );
-
-        throw error;
-    }
-};
+}
 
 
 /**
- * @description
- * Service to get interview report by interviewId.
+ * @description Service to get interview report by interviewId.
  */
-export const getInterviewReportById = async (
-    interviewId
-) => {
+export const getInterviewReportById = async (interviewId) => {
+    const response = await api.get(`/api/interview/report/${interviewId}`)
 
-    try {
-
-        const response = await api.get(
-            `/api/interview/report/${interviewId}`
-        );
-
-        return response.data;
-
-    } catch (error) {
-
-        console.error(
-            "Get Interview Report Error:",
-            error.response?.data || error.message
-        );
-
-        throw error;
-    }
-};
+    return response.data
+}
 
 
 /**
- * @description
- * Service to get all interview reports
- * of logged in user.
+ * @description Service to get all interview reports of logged in user.
  */
 export const getAllInterviewReports = async () => {
+    const response = await api.get("/api/interview/")
 
-    try {
-
-        const response = await api.get(
-            "/api/interview/"
-        );
-
-        return response.data;
-
-    } catch (error) {
-
-        console.error(
-            "Get Interview Reports Error:",
-            error.response?.data || error.message
-        );
-
-        throw error;
-    }
-};
+    return response.data
+}
 
 
 /**
- * @description
- * Service to generate resume PDF based on
- * interview report.
+ * @description Service to generate resume pdf based on user self description, resume content and job description.
  */
-export const generateResumePdf = async ({
-    interviewReportId
-}) => {
+export const generateResumePdf = async ({ interviewReportId }) => {
+    const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`, null, {
+        responseType: "blob"
+    })
 
-    try {
-
-        const response = await api.post(
-            `/api/interview/resume/pdf/${interviewReportId}`,
-            null,
-            {
-                responseType: "blob",
-            }
-        );
-
-        return response.data;
-
-    } catch (error) {
-
-        console.error(
-            "Generate Resume PDF Error:",
-            error.response?.data || error.message
-        );
-
-        throw error;
-    }
-};
-
-    
-
-
-
-
-
-
-
-
-
-
-
+    return response.data
+}

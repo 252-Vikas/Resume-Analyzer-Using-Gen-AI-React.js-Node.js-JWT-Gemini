@@ -36,7 +36,7 @@ const Home = () => {
             </header>
 
             {/* Main Card */}
-           <div className='interview-card'>
+            <div className='interview-card'>
                 <div className='interview-card__body'>
 
                     {/* Left Panel - Job Description */}
@@ -58,7 +58,7 @@ const Home = () => {
                     </div>
 
                     {/* Vertical Divider */}
-                   <div className='panel-divider' />
+                    <div className='panel-divider' />
 
                     {/* Right Panel - Profile */}
                     <div className='panel panel--right'>
@@ -139,7 +139,7 @@ const Home = () => {
             )}
 
             {/* Page Footer */}
-           <footer className='page-footer'>
+            <footer className='page-footer'>
                 <a href='#'>Privacy Policy</a>
                 <a href='#'>Terms of Service</a>
                 <a href='#'>Help Center</a>
@@ -149,15 +149,3 @@ const Home = () => {
 }
 
 export default Home
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://resume-analyzer-using-gen-ai-react-js-5kyk.onrender.com",
     withCredentials: true,
 })
 
